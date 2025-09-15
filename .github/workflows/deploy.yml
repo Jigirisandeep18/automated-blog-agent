@@ -1,0 +1,31 @@
+name: Automated Blog Generator CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Trigger on every push to the main branch
+
+jobs:
+  run-blog-generator:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: pip install --no-cache-dir -r requirements.txt
+
+    - name: Run Blog Generation Pipeline
+      run: python src/run_all.py
+
+    - name: Upload generated outputs
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-blogs
+        path: outputs/
