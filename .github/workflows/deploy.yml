@@ -3,7 +3,7 @@ name: Automated Blog Generator CI/CD
 on:
   push:
     branches:
-      - main  # Trigger on every push to the main branch
+      - main
 
 jobs:
   run-blog-generator:
@@ -25,7 +25,7 @@ jobs:
       run: python src/run_all.py
 
     - name: Upload generated outputs
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
         name: generated-blogs
         path: outputs/
