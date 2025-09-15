@@ -22,10 +22,12 @@ jobs:
       run: pip install --no-cache-dir -r requirements.txt
 
     - name: Run Blog Generation Pipeline
+      env:
+        PYTHONPATH: ./src    # Ensure src is in Python path
       run: python src/run_all.py
 
     - name: Upload generated outputs
-      uses: actions/upload-artifact@v4  # This MUST be v4
+      uses: actions/upload-artifact@v4
       with:
         name: generated-blogs
         path: outputs/
