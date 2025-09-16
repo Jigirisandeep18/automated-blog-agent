@@ -22,9 +22,9 @@ jobs:
       run: pip install --no-cache-dir -r requirements.txt
 
     - name: Run Blog Generation Pipeline
-      env:
-        PYTHONPATH: .
-      run: python -m src.run_all
+      run: |
+        export PYTHONPATH=$PYTHONPATH:./src
+        python src/run_all.py
 
     - name: Upload generated outputs
       uses: actions/upload-artifact@v4
