@@ -1,8 +1,9 @@
+from .data_ingestion import ingest_excel
+from .blog_generator import generate_blog
+from .google_sheets import append_blog
+
 import os
 import pandas as pd
-from data_ingestion import ingest_excel
-from blog_generator import generate_blog
-from google_sheets import append_blog
 
 def save_blog_to_file(topic, blog_md, output_dir="outputs"):
     os.makedirs(output_dir, exist_ok=True)
@@ -13,7 +14,7 @@ def save_blog_to_file(topic, blog_md, output_dir="outputs"):
     print(f"✅ Blog saved: {file_path}")
     return file_path
 
-if __name__ == "__main__":
+def main():
     project_root = os.path.dirname(os.path.dirname(__file__))
     input_file = os.path.join(project_root, "input", "Key Insights.xlsx")
     data_dir = os.path.join(project_root, "data")
@@ -40,32 +41,27 @@ if __name__ == "__main__":
 
         print(f"👉 Generating blog for topic: {topic}")
 
-        # Step 3 – Generate blog content (mock_mode=True in config.yaml)
         blog_md = generate_blog(
             topic=topic,
             description=description,
-            seo_keywords=[],      # Keep empty for now
+            seo_keywords=[],
             llm_keywords=[],
             deeplinks=[]
         )
 
-        # Step 4 – Save generated blog to a markdown file
         blog_path = save_blog_to_file(topic, blog_md)
-
-        # Step 5 – Append blog metadata + content to Google Sheets
-        meta_title = ""         # Parsing could be implemented later
-        meta_description = ""   # Parsing could be implemented later
 
         row_data = [
             topic,
-            meta_title,
-            meta_description,
-            "", "", "",   # SEO Keywords, LLM Keywords, Deeplinks (future improvement)
+            "", "", "", "", "",  # Metadata placeholders
             blog_md,
-            "",          # FAQs placeholder
-            "Contact us to learn more."  # CTA
+            "",
+            "Contact us to learn more."
         ]
 
         append_blog(row_data)
 
     print("🎉 All blogs processed and uploaded successfully.")
+
+if __name__ == "__main__":
+    main()
