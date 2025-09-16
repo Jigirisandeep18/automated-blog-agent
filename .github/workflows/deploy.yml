@@ -23,8 +23,8 @@ jobs:
 
     - name: Run Blog Generation Pipeline
       env:
-        PYTHONPATH: ./src    # Correct way to pass env in GitHub Actions
-      run: python src/run_all.py
+        PYTHONPATH: .
+      run: python -m src.run_all
 
     - name: Upload generated outputs
       uses: actions/upload-artifact@v4

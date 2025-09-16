@@ -1,8 +1,8 @@
 import os
 import pandas as pd
-from src.data_ingestion import ingest_excel
-from src.blog_generator import generate_blog
-from src.google_sheets import append_blog
+from data_ingestion import ingest_excel
+from blog_generator import generate_blog
+from google_sheets import append_blog
 
 def save_blog_to_file(topic, blog_md, output_dir="outputs"):
     os.makedirs(output_dir, exist_ok=True)
