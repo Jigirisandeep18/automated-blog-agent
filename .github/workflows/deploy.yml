@@ -1,0 +1,30 @@
+name: Deploy to GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: YOUR_PROJECT_ID
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Build and Deploy
+      run: |
+        gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/automated-blog-agent
+        gcloud run deploy automated-blog-agent \
+          --image gcr.io/YOUR_PROJECT_ID/automated-blog-agent \
+          --platform managed \
+          --region YOUR_REGION \
+          --allow-unauthenticated \
+          --set-env-vars MOCK_MODE=True
